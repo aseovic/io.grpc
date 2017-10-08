@@ -15,7 +15,11 @@ module io.grpc
 
     requires error.prone.annotations;
     requires guava;
-    requires instrumentation.api;
     requires jsr305;
-    requires opencensus.api;
+
+    uses io.grpc.NameResolverProvider;
+    uses io.grpc.ServerProvider;
+
+    provides io.grpc.NameResolverProvider
+            with io.grpc.internal.DnsNameResolverProvider;
     }

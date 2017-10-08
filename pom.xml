@@ -45,7 +45,18 @@
 
   <build>
     <plugins>
-      <!-- create the shaded JAR by combining existing dependencies and relocating some -->
+      <!-- create the base JAR -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>io/grpc/**/*.class</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <!-- create the shaded JAR -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -83,14 +94,6 @@
                   <include>io.opencensus:opencensus-api</include>
                 </includes>
               </artifactSet>
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>**/__Java9_Support.class</exclude>
-                  </excludes>
-                </filter>
-              </filters>
             </configuration>
           </execution>
         </executions>
