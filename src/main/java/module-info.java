@@ -15,7 +15,6 @@ module io.grpc
 
     requires error.prone.annotations;
     requires guava;
-    requires jsr305;
 
     uses io.grpc.NameResolverProvider;
     uses io.grpc.ServerProvider;
