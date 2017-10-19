@@ -13,4 +13,7 @@ build:
     - script:
       name: export enviroment for debugging purposes
       code: export
+    - script:
+      name: maven build
+      code: mvn clean install
 
