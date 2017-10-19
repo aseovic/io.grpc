@@ -1,0 +1,16 @@
+box: maven:3.5.0-jdk-9-slim 
+dev:
+  steps:
+    - script: 
+      name: export for debugging
+      code: export
+    - script:
+      name: maven build
+      code: mvn clean install
+
+build:
+  steps:
+    - script:
+      name: export enviroment for debugging purposes
+      code: export
+
