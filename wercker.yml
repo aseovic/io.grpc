@@ -6,7 +6,7 @@ dev:
       code: export
     - script:
       name: maven build
-      code: mvn clean install
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL clean install deploy
 
 build:
   steps:
@@ -15,5 +15,14 @@ build:
       code: export
     - script:
       name: maven build
-      code: mvn clean install
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml clean install
+
+deploy:
+  steps:
+    - script:
+      name: export environment for debugging purposes
+      code: export
+    - script:
+      name: maven deploy
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_REPOSITORY_URL clean install deploy
 
