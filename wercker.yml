@@ -24,5 +24,4 @@ deploy:
       code: export
     - script:
       name: maven deploy
-      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_REPOSITORY_URL clean install deploy
-
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL clean install deploy
