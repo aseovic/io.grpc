@@ -16,6 +16,7 @@ module io.grpc
     requires error.prone.annotations;
     requires guava;
 
+    uses io.grpc.ManagedChannelProvider;
     uses io.grpc.NameResolverProvider;
     uses io.grpc.ServerProvider;
 
