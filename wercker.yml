@@ -6,7 +6,14 @@ dev:
       code: export
     - script:
       name: maven build
-      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL clean install deploy
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B clean install deploy
+    - script:
+      name: Coherence gRPC trigger
+      code: >
+        curl -i -H "Authorization: Bearer $BUILD_TOKEN" \
+            -H 'Content-Type: application/json' -X POST \
+            -d '{"pipelineId": "59ee2e559766e5010097ea2f"}' \
+            https://app.wercker.com/api/v3/runs
 
 build:
   steps:
@@ -15,7 +22,7 @@ build:
       code: export
     - script:
       name: maven build
-      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml clean install
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B clean install
 
 deploy:
   steps:
@@ -24,4 +31,14 @@ deploy:
       code: export
     - script:
       name: maven deploy
-      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL clean install deploy
+      code: echo $MAVEN_SETTINGS_XML > settings.xml ; mvn -s settings.xml -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -B clean install deploy
+
+trigger-grpc:
+  steps:
+    - script:
+      name: Coherence gRPC trigger
+      code: >
+        curl -i -H "Authorization: Bearer $BUILD_TOKEN" \
+            -H 'Content-Type: application/json' -X POST \
+            -d '{"pipelineId": "59ee2e559766e5010097ea2f"}' \
+            https://app.wercker.com/api/v3/runs
