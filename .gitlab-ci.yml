@@ -1,0 +1,39 @@
+image: registry.oracledx.com/skeppare/mira-docker-maven:3.5.0-jdk9.0.1
+
+stages:
+  - maven_build
+  - maven_deploy
+    
+maven_build:
+  stage: maven_build
+  script:
+    - export
+    - echo $MAVEN_SETTINGS_XML > settings.xml
+    - mvn -B -s settings.xml clean install
+  artifacts:
+    when: always
+    paths:
+    - "*/target/test-output"
+    - "*/target/surefire-reports"
+    - "*/target/failsafe-reports"
+  tags:
+    - docker
+    - privileged
+
+maven_deploy:
+  stage: maven_deploy
+  script:
+    - export
+    - echo $MAVEN_SETTINGS_XML > settings.xml
+    - > 
+      mvn -B -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL 
+      -s settings.xml clean install deploy
+  artifacts:
+    when: always
+    paths:
+    - "*/target/test-output"
+    - "*/target/surefire-reports"
+    - "*/target/failsafe-reports"
+  tags:
+    - docker
+    - privileged
