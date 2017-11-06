@@ -28,7 +28,7 @@ maven_deploy:
     - echo $MAVEN_SETTINGS_XML > settings.xml
     - > 
       mvn -B -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL 
-      -s settings.xml clean install deploy
+      -DskipTests=true -s settings.xml clean install deploy
   artifacts:
     when: always
     paths:
