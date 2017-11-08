@@ -1,4 +1,4 @@
-image: registry.oracledx.com/skeppare/mira-docker-maven:3.5.0-jdk9.0.1
+image: wcr.io/mira/docker-maven:3.5.0-jdk9.0.1
 
 stages:
   - maven_build
