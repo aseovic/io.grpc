@@ -52,17 +52,17 @@ trigger-coherence-grpc:
       https://gitlab-odx.oracle.com/api/v4/projects/572/trigger/pipeline
 
 trigger-release:
-  stage: trigger
+  except:
+    - /^release-.*$/
+  image: docker:git
   script:
     - export
-    - echo $MAVEN_SETTINGS_XML > settings.xml
     - git checkout -b release-$CI_BUILD_ID
     - git push
+  stage: trigger
   tags:
     - docker
     - privileged
-  except:
-    - /^release-.*$/
   when: manual
 
 maven-release:
