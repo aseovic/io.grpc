@@ -58,7 +58,7 @@ trigger-release:
   script:
     - export
     - git checkout -b release-$CI_BUILD_ID
-    - git push
+    - git push --set-upstream origin release-$CI_BUILD_ID
   stage: trigger
   tags:
     - docker
