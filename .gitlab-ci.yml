@@ -56,6 +56,10 @@ trigger-release:
     - /^release-.*$/
   image: docker:git
   script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - export
     - git checkout -b release-$CI_BUILD_ID
     - git config --global http.sslVerify false
