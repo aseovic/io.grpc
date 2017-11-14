@@ -55,6 +55,7 @@ trigger-release:
   except:
     - /^release-.*$/
   script:
+    - echo $CURL_PROXY >> ~/.curlrc
     - 'which ssh-agent || (yum -y install openssh-clients)'
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
