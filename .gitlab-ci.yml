@@ -27,7 +27,8 @@ maven_deploy:
     - export
     - echo $MAVEN_SETTINGS_XML > settings.xml
     - > 
-      mvn -B -DaltDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL 
+      mvn -B -DaltSnapshotDeploymentRepository=snapshots::default::$MAVEN_SNAPSHOTS_URL 
+      -DaltReleaseDeploymentRepository=releases::default::$MAVEN_RELEASES_URL
       -DskipTests=true -s settings.xml clean install deploy
   artifacts:
     when: always
