@@ -4,7 +4,6 @@ stages:
   - maven_build
   - maven_deploy
   - trigger
-  - release
     
 maven_build:
   stage: maven_build
@@ -21,8 +20,6 @@ maven_build:
   tags:
     - docker
     - privileged
-  except:
-    - /^release-.*$/
 
 maven_deploy:
   stage: maven_deploy
@@ -41,8 +38,6 @@ maven_deploy:
   tags:
     - docker
     - privileged
-  except:
-    - /^release-.*$/
 
 trigger-coherence-grpc:
   stage: trigger
@@ -51,33 +46,3 @@ trigger-coherence-grpc:
       curl --insecure --request POST --form "token=$CI_JOB_TOKEN" --form ref=master 
       https://gitlab-odx.oracle.com/api/v4/projects/572/trigger/pipeline
 
-trigger-release:
-  except:
-    - /^release-.*$/
-  script:
-    - 'which ssh-agent || (yum -y install git openssh-clients)'
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - export
-    - git checkout -b release-$CI_BUILD_ID
-    - git config --global http.sslVerify false
-    - git remote set-url --push origin git@gitlab-odx.oracle.com:mira/io-grpc.git
-    - git push --set-upstream origin release-$CI_BUILD_ID
-  stage: trigger
-  tags:
-    - docker
-    - privileged
-  when: manual
-
-maven-release:
-  stage: release
-  script:
-    - export
-    - echo $MAVEN_SETTINGS_XML > settings.xml
-  tags:
-    - docker
-    - privileged
-  only:
-    - /^release-.*$/
